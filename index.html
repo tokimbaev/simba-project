@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LecturesBase - Университетская платформа</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+    <!-- Шапка -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <h2>📚 LecturesBase</h2>
+                </div>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="#home">Главная</a></li>
+                    <li id="admin-link" style="display: none;"><a href="#admin">Админ-панель</a></li>
+                    <li id="teacher-link" style="display: none;"><a href="#teacher">Кабинет преподавателя</a></li>
+                    <li id="student-link" style="display: none;"><a href="#student">Мои лекции</a></li>
+                    <li id="login-link"><a href="#login">Войти</a></li>
+                    <li id="logout-link" style="display: none;"><a href="#" id="logout-btn">Выйти (<span id="user-name"></span>)</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Главный баннер -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>LecturesBase - База университетских лекций</h1>
+                <p>Все лекции, презентации и учебные материалы в одной системе. Преподаватели загружают — студенты учатся.</p>
+                <div class="hero-buttons">
+                    <a href="#login" class="btn primary">Войти в систему</a>
+                    <a href="#materials" class="btn secondary">Посмотреть материалы</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Информация о системе -->
+        <section class="info-section">
+            <div class="container">
+                <div class="system-info">
+                    <h3>🚀 Добро пожаловать в LecturesBase</h3>
+                    <p>Полнофункциональная платформа для управления учебными материалами</p>
+                    <div class="feature-cards">
+                        <div class="feature-card">
+                            <h4>👨‍🎓 Для студентов</h4>
+                            <p>Доступ ко всем лекциям вашей группы в одном месте</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>👨‍🏫 Для преподавателей</h4>
+                            <p>Загружайте материалы один раз для всех студентов</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>⚙️ Для администраторов</h4>
+                            <p>Полный контроль над пользователями и материалами</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Форма входа -->
+        <section id="login" class="auth-section">
+            <div class="auth-container">
+                <h2>Вход в LecturesBase</h2>
+                <form id="login-form">
+                    <input type="email" id="login-email" placeholder="Email" required>
+                    <input type="password" id="login-password" placeholder="Пароль" required>
+                    <button type="submit" class="btn primary">Войти в систему</button>
+                </form>
+                <div id="auth-message"></div>
+                
+                <!-- Админ: создание пользователей -->
+                <div id="admin-panel" style="display: none; margin-top: 30px; padding: 20px; background: #f5f5f5; border-radius: 10px;">
+                    <h3>Создать нового пользователя</h3>
+                    <form id="create-user-form">
+                        <input type="email" id="new-user-email" placeholder="Email пользователя" required>
+                        <input type="password" id="new-user-password" placeholder="Пароль" required>
+                        <select id="new-user-role" required>
+                            <option value="">Выберите роль</option>
+                            <option value="student">Студент</option>
+                            <option value="teacher">Преподаватель</option>
+                            <option value="admin">Администратор</option>
+                        </select>
+                        <input type="text" id="new-user-name" placeholder="ФИО" required>
+                        <input type="text" id="new-user-group" placeholder="Группа (для студентов)">
+                        <button type="submit" class="btn primary">Создать пользователя</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Личный кабинет студента -->
+        <section id="student" class="dashboard-section" style="display: none;">
+            <div class="container">
+                <h2>📖 Мои лекции</h2>
+                <p class="section-subtitle">Доступные учебные материалы для вашей группы</p>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <h3>Доступно материалов</h3>
+                        <div id="student-materials-count">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Ваша группа</h3>
+                        <div id="student-group">-</div>
+                    </div>
+                </div>
+
+                <div class="materials-grid" id="student-materials">
+                    <!-- Лекции будут загружаться здесь -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Кабинет преподавателя -->
+        <section id="teacher" class="dashboard-section" style="display: none;">
+            <div class="container">
+                <h2>👨‍🏫 Кабинет преподавателя</h2>
+                <p class="section-subtitle">Управление учебными материалами</p>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <h3>Загружено материалов</h3>
+                        <div id="teacher-materials-count">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Всего скачиваний</h3>
+                        <div id="teacher-downloads-count">0</div>
+                    </div>
+                </div>
+                
+                <!-- Форма загрузки материалов -->
+                <div class="upload-form">
+                    <h3>📤 Загрузить новый материал</h3>
+                    <form id="upload-material-form">
+                        <div class="form-row">
+                            <input type="text" id="material-title" placeholder="Название лекции/материала" required>
+                            <input type="text" id="material-subject" placeholder="Учебный предмет" required>
+                        </div>
+                        <div class="form-row">
+                            <select id="material-faculty" required>
+                                <option value="">Выберите факультет</option>
+                                <option value="it">Информационные технологии</option>
+                                <option value="economics">Экономика</option>
+                                <option value="law">Юриспруденция</option>
+                                <option value="engineering">Инженерия</option>
+                                <option value="medicine">Медицина</option>
+                            </select>
+                            <select id="material-type" required>
+                                <option value="">Тип материала</option>
+                                <option value="lecture">Лекция</option>
+                                <option value="presentation">Презентация</option>
+                                <option value="methodology">Методичка</option>
+                                <option value="task">Задание</option>
+                                <option value="reference">Справочный материал</option>
+                            </select>
+                        </div>
+                        <textarea id="material-description" placeholder="Описание материала" required></textarea>
+                        <input type="text" id="material-groups" placeholder="Группы (через запятую, например: ИС-21,ИС-22)">
+                        
+                        <!-- Загрузка файла -->
+                        <div class="file-upload">
+                            <label>📎 Выберите файл для загрузки:</label>
+                            <input type="file" id="material-file" required>
+                            <small>Поддерживаемые форматы: PDF, PPT, DOC, ZIP (макс. 50MB)</small>
+                        </div>
+                        
+                        <button type="submit" class="btn primary">Загрузить материал</button>
+                    </form>
+                </div>
+
+                <!-- Мои загруженные материалы -->
+                <div class="my-materials">
+                    <h3>📂 Мои загруженные материалы</h3>
+                    <div class="materials-grid" id="teacher-materials">
+                        <!-- Материалы преподавателя -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Админ-панель -->
+        <section id="admin" class="dashboard-section" style="display: none;">
+            <div class="container">
+                <h2>⚙️ Админ-панель LecturesBase</h2>
+                <p class="section-subtitle">Управление системой и пользователями</p>
+                
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <h3>👥 Пользователи</h3>
+                        <div id="users-count">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>📚 Материалы</h3>
+                        <div id="materials-count">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>📥 Скачивания</h3>
+                        <div id="downloads-count">0</div>
+                    </div>
+                </div>
+                
+                <div class="admin-actions">
+                    <h3>Быстрые действия</h3>
+                    <div class="action-buttons">
+                        <button class="btn primary" onclick="showCreateUserForm()">➕ Создать пользователя</button>
+                        <button class="btn secondary" onclick="exportData()">📊 Экспорт статистики</button>
+                        <button class="btn secondary" onclick="systemBackup()">💾 Создать резервную копию</button>
+                    </div>
+                </div>
+                
+                <div class="users-list">
+                    <h3>Список пользователей системы</h3>
+                    <div id="users-list">
+                        <!-- Список пользователей -->
+                    </div>
+                </div>
+
+                <div class="system-materials">
+                    <h3>Все материалы системы</h3>
+                    <div class="materials-grid" id="admin-materials">
+                        <!-- Все материалы -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Публичная база материалов -->
+        <section id="materials" class="materials">
+            <div class="container">
+                <h2>📋 База материалов LecturesBase</h2>
+                <p class="section-subtitle">Общедоступные учебные материалы</p>
+                
+                <div class="filters">
+                    <select id="faculty-select">
+                        <option value="">Все факультеты</option>
+                        <option value="it">Информационные технологии</option>
+                        <option value="economics">Экономика</option>
+                        <option value="law">Юриспруденция</option>
+                        <option value="engineering">Инженерия</option>
+                        <option value="medicine">Медицина</option>
+                    </select>
+                    <select id="subject-select">
+                        <option value="">Все предметы</option>
+                        <option value="programming">Программирование</option>
+                        <option value="math">Математика</option>
+                        <option value="economics">Экономика</option>
+                        <option value="law">Право</option>
+                        <option value="physics">Физика</option>
+                        <option value="biology">Биология</option>
+                    </select>
+                    <select id="type-select">
+                        <option value="">Все типы</option>
+                        <option value="lecture">Лекции</option>
+                        <option value="presentation">Презентации</option>
+                        <option value="methodology">Методички</option>
+                        <option value="task">Задания</option>
+                    </select>
+                    <input type="text" id="search-input" placeholder="Поиск по названию или описанию...">
+                </div>
+                
+                <div class="materials-info">
+                    <span id="materials-count-text">Загружается...</span>
+                </div>
+                
+                <div class="materials-grid" id="public-materials">
+                    <!-- Публичные материалы -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>📚 LecturesBase</h3>
+                    <p>Университетская платформа для обучения</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#home">Главная</a>
+                    <a href="#materials">База материалов</a>
+                    <a href="#login">Вход в систему</a>
+                </div>
+                <div class="footer-info">
+                    <p><strong>Техническая поддержка:</strong></p>
+                    <p>Email: support@lecturesbase.ru</p>
+                    <p>Телефон: +7 (999) 123-45-67</p>
+                </div>
+            </div>
+            <p class="footer-copyright">© 2024 LecturesBase. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
